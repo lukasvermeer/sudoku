@@ -111,6 +111,7 @@ function writeField() {
 	writeButton('hard','hard example','menu','preset(3)');
 	writeButton('impossible','impossible example','menu','preset(4)');
 	writeButton('insane','insane example','menu','preset(5)');
+	writeButton('impossible','impossible example','menu','preset(6)');
 	
 	for (i = 0; i < numDepth; i++) { stat_lvl[i] = 0; }
 	//for (i = 0; i < numDepth; i++) {
@@ -362,24 +363,29 @@ function genGuess(d) {
 	done = false;
 	end = false;
 	saveData(d);
+	p = 9; a = 0; b = 0;
 	if (guess[d] == null) { guess[d] = 0; }
 	countdown = guess[d];
 	for (i = 0; i < numDepth && !done; i++) {
 		for (j = 0; j < numDepth && !done; j++) {
 			if (cellGet(i,j).innerHTML == '') { 
-				o = getOptions(i,j); 
-				if (o.length > countdown) {
-					for (k = 0; k < o.length && !done; k++) { 
-						if (countdown == 0) {
-							curguess[d] = o[k];
-							curguessx[d] = i;
-							curguessy[d] = j;
-							guessdepth++;
-							done = true;
-							cellSet(i,j,o[k]);
-							cellGet(i,j).setAttribute('class','cell guess'); }
-						countdown--; } }
-				else { end = true; alert('no solution at this level'); guessdepth--; unGuess(); } } } }  
+				o = getOptions(i,j);
+				if (o.length < p) { 
+					a = i; b = j; p = o.length; } } } } 
+	o = getOptions(a,b);
+	if (o.length > countdown) {
+		for (k = 0; k < o.length && !done; k++) { 
+			if (countdown == 0) {
+				curguess[d] = o[k];
+				curguessx[d] = a;
+				curguessy[d] = b;
+				guessdepth++;
+				done = true;
+				cellSet(a,b,o[k]);
+				cellGet(a,b).setAttribute('class','cell guess'); }
+			countdown--; } }
+	else { end = true; alert('no solution at this level'); guessdepth--; unGuess(); }
+	
 	if (!end) { solveLoop(0); } }
 
 function unGuess() {
@@ -410,4 +416,5 @@ function preset(i) {
 	if (i==2) { cellSet(0,3,3); cellSet(0,5,8); cellSet(0,7,6); cellSet(1,0,4); cellSet(1,2,7); cellSet(1,3,6); cellSet(2,2,1); cellSet(2,5,2); cellSet(2,6,4); cellSet(3,0,2); cellSet(3,1,8); cellSet(3,5,4); cellSet(3,6,7); cellSet(4,1,1); cellSet(4,7,3); cellSet(5,2,4); cellSet(5,3,9); cellSet(5,7,1); cellSet(5,8,2); cellSet(6,2,8); cellSet(6,3,2); cellSet(6,6,3); cellSet(7,5,1); cellSet(7,6,2); cellSet(7,8,9); cellSet(8,1,2); cellSet(8,3,8); cellSet(8,5,6); }
 	if (i==3) { cellSet(0,1,1);cellSet(0,7,8); cellSet(1,2,5); cellSet(1,4,1); cellSet(1,6,3); cellSet(2,1,4); cellSet(2,3,8); cellSet(2,5,3); cellSet(2,8,5); cellSet(3,0,9); cellSet(3,3,2); cellSet(3,4,6); cellSet(3,8,4); cellSet(4,1,3); cellSet(4,7,5); cellSet(5,0,2); cellSet(5,4,3); cellSet(5,5,4); cellSet(5,8,7); cellSet(6,0,1); cellSet(6,3,6); cellSet(6,5,2); cellSet(6,7,9); cellSet(7,2,6); cellSet(7,4,8); cellSet(7,6,7); cellSet(8,1,2); cellSet(8,7,6); } 
 	if (i==4) { cellSet(0,0,9);cellSet(0,1,5);cellSet(0,6,6);cellSet(0,7,7);cellSet(1,5,7);cellSet(1,6,3);cellSet(1,7,1);cellSet(2,0,8);cellSet(2,3,5);cellSet(2,4,6);cellSet(2,5,1);cellSet(3,0,2);cellSet(3,1,3);cellSet(4,2,9);cellSet(4,6,1);cellSet(5,7,3);cellSet(5,8,7);cellSet(6,3,1);cellSet(6,4,4);cellSet(6,5,5);cellSet(6,8,9);cellSet(7,1,9);cellSet(7,2,4);cellSet(7,3,2);cellSet(8,1,8);cellSet(8,2,5);cellSet(8,7,2);cellSet(8,8,1); }
-	if (i==5) { cellSet(0,1,7); cellSet(0,3,9); cellSet(0,6,5); cellSet(1,2,1); cellSet(1,4,2); cellSet(1,8,4); cellSet(2,0,3); cellSet(2,5,7); cellSet(3,1,8); cellSet(3,5,5); cellSet(3,7,9); cellSet(4,3,2); cellSet(4,4,3); cellSet(4,6,6); cellSet(5,2,4); cellSet(6,0,6); cellSet(6,4,1); cellSet(6,7,5); cellSet(7,3,8); cellSet(7,8,7); cellSet(8,1,9); cellSet(8,2,2); cellSet(8,8,3); } }
+	if (i==5) { cellSet(0,1,7); cellSet(0,3,9); cellSet(0,6,5); cellSet(1,2,1); cellSet(1,4,2); cellSet(1,8,4); cellSet(2,0,3); cellSet(2,5,7); cellSet(3,1,8); cellSet(3,5,5); cellSet(3,7,9); cellSet(4,3,2); cellSet(4,4,3); cellSet(4,6,6); cellSet(5,2,4); cellSet(6,0,6); cellSet(6,4,1); cellSet(6,7,5); cellSet(7,3,8); cellSet(7,8,7); cellSet(8,1,9); cellSet(8,2,2); cellSet(8,8,3); }
+	if (i==6) { cellSet(0,0,1); cellSet(1,0,4); cellSet(2,2,9); cellSet(0,3,4); cellSet(1,4,8); cellSet(0,6,7); cellSet(1,6,1); cellSet(2,8,6); cellSet(5,0,9); cellSet(5,2,2); cellSet(3,3,6); cellSet(4,3,9); cellSet(4,5,2); cellSet(3,6,9); cellSet(5,6,6); cellSet(4,8,5); cellSet(6,0,5); cellSet(8,0,2); cellSet(6,3,8); cellSet(7,3,2); cellSet(8,3,5); cellSet(6,8,4); cellSet(7,7,6); cellSet(8,8,1);} }
