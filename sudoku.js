@@ -3,7 +3,7 @@
 
 var cellSize = 55;
 var numDepth = 9;
-var delay = 10;
+var delay = 1;
 var progress = false;
 var play = false;
 var save = new Array();
