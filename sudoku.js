@@ -24,20 +24,8 @@ var curguessy = new Array();
 stat_loops = 0;
 stat_lvl = new Array();
 
-function mod3(i) {
-	// dit kan netter!!!
-	if (i <= 2 && i >= 0) return 0;	
-	if (i <= 5 && i >= 3) return 3;
-	if (i <= 8 && i >= 6) return 6;
-}
-
-function rest3(i) {
-	// dit kan netter!!!
-	if (i == 0 || i == 3 || i == 6) return 0;	
-	if (i == 1 || i == 4 || i == 7) return 3;
-	if (i == 2 || i == 5 || i == 8) return 6;
-}
-
+function mod3(i) { return Math.floor(i / 3) * 3; }
+function rest3(i) { return i % 3 * 3; }
 function compareContents(a,b) { for (i=0;i<Math.max(a.length,b.length);i++) { if (a[i]!=b[i]) return false; } return true; }
 
 function verbose(v) { if (v == null) { v = '...'; } document.getElementById('verbose').innerHTML = v; }
@@ -261,7 +249,7 @@ function checkEndRecursive(i,j,t) {
 	if (!(j >= numDepth)) {
 		a = cellGet(i,j).innerHTML;
 		if (a == '') { t = false; }
-		recursive('checkEndRecursive('+(++i)+','+j+','+t+')'); }
+		checkEndRecursive(++i,j,t); }
 	else { 
 		if (t) { verbose('finished!'); stopLoop(); }
 		else { checkLockedRecursive(0,0,true); } } }
@@ -272,7 +260,7 @@ function checkLockedRecursive(i,j,t) {
 		a = cellGet(i,j).innerHTML;
 		b = getOptions(i,j);
 		if (a == '' && b.length == 0) { t = false; }
-		recursive('checkLockedRecursive('+(++i)+','+j+','+t+')'); }
+		checkLockedRecursive(++i,j,t); }
 	else { 
 		if (!t) { lockResolution(); }
 		else { solveLoop(9); } } }
@@ -282,7 +270,7 @@ function genExclusionsRecursive(i,j) {
 	if (!(j >= numDepth)) {
 		a = cellGet(i,j).innerHTML;
 		if (a != '') { genExclusion(i,j,a); }
-		recursive('genExclusionsRecursive('+(++i)+','+j+')'); }
+		genExclusionsRecursive(++i,j); }
 	else { solveLoop(1); } }
 
 function genExclusion(i,j,a) {
@@ -316,8 +304,9 @@ function genEliminateRecursive(i,j) {
 			if (cellGet(i,j).getAttribute('class') == 'cell') { cellGet(i,j).setAttribute('class','cell elimin'); }
 			genExclusion(i,j,q[0]);
 			progress = true; 
-			stat_lvl[0]++; } 
-		recursive('genEliminateRecursive('+(++i)+','+j+')'); } 
+			stat_lvl[0]++; 
+			recursive('genEliminateRecursive('+(++i)+','+j+')'); } 
+		else { genEliminateRecursive(++i,j); } } 
 	else { solveLoop(2); } } 
 
 function genExtrapolateRecursive(i,t) {
